@@ -1,15 +1,61 @@
-import BoxMedieval from "@/components/book-medieval";
-import { OrbitControls, Sky } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
+import { Physics, RigidBody } from "@react-three/rapier";
+import {
+  Gltf,
+  Environment,
+  Fisheye,
+  KeyboardControls,
+} from "@react-three/drei";
+import Controller from "ecctrl";
 
 const App = () => {
+  const keyboardMap = [
+    { name: "forward", keys: ["ArrowUp", "KeyW"] },
+    { name: "backward", keys: ["ArrowDown", "KeyS"] },
+    { name: "leftward", keys: ["ArrowLeft", "KeyA"] },
+    { name: "rightward", keys: ["ArrowRight", "KeyD"] },
+    { name: "jump", keys: ["Space"] },
+    { name: "run", keys: ["Shift"] },
+  ];
   return (
-    <Canvas style={{ height: window.innerHeight }}>
-      <OrbitControls />
-      <Sky />
-      <ambientLight intensity={0.5} />
-      <spotLight position={[10, 15, 10]} angle={0.3} />
-      <BoxMedieval />
+    <Canvas shadows onPointerDown={(e) => e.target.requestPointerLock()}>
+      <Fisheye zoom={0.4}>
+        <Environment files="/night.hdr" ground={{ scale: 100 }} />
+        <directionalLight
+          intensity={0.7}
+          castShadow
+          shadow-bias={-0.0004}
+          position={[-20, 20, 20]}
+        >
+          <orthographicCamera
+            attach="shadow-camera"
+            args={[-20, 20, 20, -20]}
+          />
+        </directionalLight>
+        <ambientLight intensity={0.2} />
+        <Physics timeStep="vary">
+          {/* <KeyboardControls map={keyboardMap}>
+            <Controller maxVelLimit={5}>
+              <Gltf
+                castShadow
+                receiveShadow
+                scale={0.315}
+                position={[0, -0.55, 0]}
+                src="/free_cat_wizard.glb"
+              />
+            </Controller>
+          </KeyboardControls> */}
+          <RigidBody type="fixed" colliders="trimesh">
+            <Gltf
+              castShadow
+              receiveShadow
+              rotation={[-Math.PI / 3000, 50, 0]}
+              scale={50}
+              src="/tropical_island_lowpoly_scene.glb"
+            />
+          </RigidBody>
+        </Physics>
+      </Fisheye>
     </Canvas>
   );
 };
