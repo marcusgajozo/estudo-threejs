@@ -17,10 +17,12 @@
     "@types/three": "^0.169.0",
     "ecctrl": "^1.0.89",
     "install": "^0.13.0",
+    "leva": "^0.9.35",
     "npm": "^10.8.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "three": "^0.169.0"
+    "three": "^0.169.0",
+    "three-x3": "^0.0.10"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
